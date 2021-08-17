@@ -1,32 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Product is ERC721Enumerable {
-    string[] public products;
+contract Product is ERC721URIStorage {
+    using Counters for Counters.Counter;
 
-    mapping(string => bool) _productExists;
+    Counters.Counter private _tokenIds;
 
     constructor() ERC721("Product", "PRDCT") {}
 
-    modifier productExists(string memory _productName) {
-        // require unique product name
-        require(!_productExists[_productName], "Product already exists!");
-        _;
-    }
-
-    function mint(string memory _productName)
-        external
-        productExists(_productName)
+    function sendItem(address buyer, string memory tokenURI)
+        public
+        returns (uint256)
     {
-        // product name
-        products.push(_productName);
-        // https://ethereum.stackexchange.com/a/89793
-        uint256 tokenId = products.length - 1;
-        // call the mint function
-        _mint(msg.sender, tokenId);
-        _productExists[_productName] = true;
+        _tokenIds.increment();
+
+        uint256 newItemId = _tokenIds.current();
+        _mint(buyer, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+
+        return newItemId;
     }
 }
