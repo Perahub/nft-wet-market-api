@@ -7,7 +7,7 @@ const createProduct = async (req, res) => {
             ...req.body
         });
         return res.status(httpStatus.CREATED).json({
-            ...product
+            product
         })
     } catch (error) {
         return res.status(httpStatus.BAD_REQUEST).json({
@@ -21,7 +21,7 @@ const getProduct = async (req, res, next) => {
         const product = await ProductModel.findById(req.params.id);
         if (product) {
             res.json({
-                ...product
+                product
             });
         } else {
             res.status(httpStatus.NOT_FOUND).json({
@@ -58,7 +58,7 @@ const updateProduct = async (req, res, next) => {
             }
         );
         res.json({
-            ...product
+            product
         });
     } catch (error) {
         res.status(httpStatus.BAD_REQUEST).json({
@@ -70,9 +70,14 @@ const updateProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     try {
         const product = await ProductModel.findById(req.params.id);
-        await product.remove()
-        res.json({
-            message: "ok"
+        if (product) {
+            await product.remove()
+            return res.json({
+                message: "ok"
+            });
+        }
+        return res.status(httpStatus.NOT_FOUND).json({
+            message: "Not found!"
         });
     } catch (error) {
         res.status(httpStatus.BAD_REQUEST).json({
