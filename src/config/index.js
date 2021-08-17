@@ -4,6 +4,29 @@ import Product from '../abis/Product.json'
 
 dotenv.config();
 
+const modelOptions = {
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
+}
+
+const createDatabase = () => {
+    mongoose.connect(databaseConfig.mongo.host, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false
+    }).catch(error => {
+        console.log(error)
+    })
+
+    db.once("open", () => {
+        console.log('connected to database!');
+    });
+    db.on("error", console.error.bind(console, "connection error:"));
+};
+
 const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 const productNetworkId = async () => web3.eth.net.getId();
 const productContract = async () => {
@@ -16,5 +39,7 @@ const productContract = async () => {
 
 export {
     web3,
-    productContract
+    productContract,
+    createDatabase,
+    modelOptions
 }

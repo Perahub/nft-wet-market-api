@@ -1,0 +1,27 @@
+version: "3"
+
+networks:
+  nft-wet-market:
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - nft-wet-market
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    networks:
+      - nft-wet-market
