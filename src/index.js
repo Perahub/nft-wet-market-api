@@ -3,11 +3,11 @@ import cors from "cors";
 import helmet from "helmet";
 import * as dotenv from "dotenv";
 import productRoute from './routes/product.route'
+import { startApplication } from './config';
 
 dotenv.config();
 
 const app = express()
-const PORT = process.env.PORT || 4001;
 
 app.use(express.json());
 app.use(helmet());
@@ -21,6 +21,5 @@ app.get('/', (req, res) => {
 })
 
 
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
+startApplication(app);
+

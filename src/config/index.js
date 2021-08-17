@@ -1,8 +1,12 @@
 import * as dotenv from "dotenv";
 import Web3 from 'web3';
+import mongoose from "mongoose";
 import Product from '../abis/Product.json'
 
 dotenv.config();
+
+const PORT = process.env.PORT || 4001;
+const db = mongoose.connection;
 
 const modelOptions = {
     timestamps: {
@@ -11,15 +15,21 @@ const modelOptions = {
     }
 }
 
-const createDatabase = () => {
-    mongoose.connect(databaseConfig.mongo.host, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false
-    }).catch(error => {
-        console.log(error)
-    })
+const startApplication = (app) => {
+    mongoose.connect(process.env.DB_HOST, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: false
+        })
+        .then(() => {
+            app.listen(PORT, () => {
+                console.log(`Listening on port ${PORT}`);
+            });
+        })
+        .catch(error => {
+            console.log(error)
+        })
 
     db.once("open", () => {
         console.log('connected to database!');
@@ -40,6 +50,6 @@ const productContract = async () => {
 export {
     web3,
     productContract,
-    createDatabase,
+    startApplication,
     modelOptions
 }
