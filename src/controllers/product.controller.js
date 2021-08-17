@@ -1,5 +1,6 @@
 import ProductModel from '../models/product.model'
 import httpStatus from 'http-status-codes'
+import { productContract } from '../config';
 
 const createProduct = async (req, res) => {
     try {
@@ -19,9 +20,10 @@ const createProduct = async (req, res) => {
 const getProduct = async (req, res, next) => {
     try {
         const product = await ProductModel.findById(req.params.id);
+        const productObject = product.toObject();
         if (product) {
             res.json({
-                product
+                ...productObject
             });
         } else {
             res.status(httpStatus.NOT_FOUND).json({
@@ -86,20 +88,30 @@ const deleteProduct = async (req, res, next) => {
     }
 }
 
-// const mintProduct = async (req, res) => {
-//     try {
-//         const contract = await productContract();
-//         await contract.methods.mint(req.body.name).encodeABI();
-//         return res.json({
-//             message: 'successfully minted!'
-//         });
-//         // return
-//     } catch (error) {
-//         return res.status(400).json({
-//             message: error.message
-//         })
-//     }
-// }
+const sendProduct = async (req, res) => {
+    try {
+        const product = await ProductModel.findById(req.params.id);
+        if (!product) {
+            return res.status(httpStatus.NOT_FOUND).json({
+                message: "Not found!"
+            });
+        }
+        const productURL = `${process.env.NODE_BASE_URL}/products/${req.params.id}`
+        const contract = await productContract();
+        await contract.methods.sendItem(
+            req.body.address,
+            productURL
+        ).encodeABI();
+        return res.json({
+            message: 'product sent'
+        });
+        // return
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        })
+    }
+}
 
 
 export {
@@ -107,5 +119,6 @@ export {
     updateProduct,
     getProduct,
     getProducts,
-    deleteProduct
+    deleteProduct,
+    sendProduct
 }
