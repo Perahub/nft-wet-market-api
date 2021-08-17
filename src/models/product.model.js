@@ -36,6 +36,9 @@ const productSchema = new Schema({
         unit: {
             type: String,
         },
+        address: {
+            type: String
+        }
     },
     modelOptions
 );

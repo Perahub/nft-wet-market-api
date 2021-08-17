@@ -4,18 +4,24 @@ import {
     productContract
 } from '../config';
 
-const productURL = (req) => `${process.env.NODE_BASE_URL}/products/${req.params.id}`;
+const productURL = (id) => `${process.env.NODE_BASE_URL}/products/${id}`;
 
 const createProduct = async (req, res) => {
     try {
         const product = await ProductModel.create({
             ...req.body
         });
+        const productObject = product.toObject();
+        const contract = await productContract();
+        await contract.methods.sendItem(
+            req.body.address,
+            productURL(productObject._id)
+        ).encodeABI();
         return res.status(httpStatus.CREATED).json({
             product
         })
     } catch (error) {
-        return res.status(httpStatus.BAD_REQUEST).json({
+        return res.status(400).json({
             message: error.message
         })
     }
@@ -104,7 +110,7 @@ const sendProduct = async (req, res) => {
         const contract = await productContract();
         await contract.methods.sendItem(
             req.body.address,
-            productURL(req)
+            productURL(req.params.id)
         ).encodeABI();
         return res.json({
             message: 'product sent'
