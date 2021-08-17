@@ -1,6 +1,10 @@
 import ProductModel from '../models/product.model'
 import httpStatus from 'http-status-codes'
-import { productContract } from '../config';
+import {
+    productContract
+} from '../config';
+
+const productURL = (req) => `${process.env.NODE_BASE_URL}/products/${req.params.id}`;
 
 const createProduct = async (req, res) => {
     try {
@@ -96,11 +100,11 @@ const sendProduct = async (req, res) => {
                 message: "Not found!"
             });
         }
-        const productURL = `${process.env.NODE_BASE_URL}/products/${req.params.id}`
+
         const contract = await productContract();
         await contract.methods.sendItem(
             req.body.address,
-            productURL
+            productURL(req)
         ).encodeABI();
         return res.json({
             message: 'product sent'
