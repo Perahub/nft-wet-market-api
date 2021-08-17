@@ -9,7 +9,8 @@ const getProducts = async (req, res) => {
 }
 
 const getTotalSupply = async (req, res) => {
-    const totalSupply = await productContract.methods.totalSupply().call();
+    const contract = await productContract();
+    const totalSupply = await contract.methods.totalSupply().call();
     res.json({
         totalSupply
     })
