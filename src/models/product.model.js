@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
 import {
     v4 as uuidv4
 } from "uuid";
@@ -31,11 +32,15 @@ const productSchema = new Schema({
         },
         quantity: {
             type: Number,
-        }
+        },
+        unit: {
+            type: String,
+        },
     },
     modelOptions
 );
 
-const Product = mongoose.model("Product", productSchema);
+productSchema.plugin(mongoosePaginate);
+const ProductModel = mongoose.model("Product", productSchema);
 
-export default Product;
+export default ProductModel;
