@@ -11,7 +11,7 @@ contract Product is ERC721URIStorage {
 
     constructor() ERC721("Product", "PRDCT") {}
 
-    function sendItem(address buyer, string memory tokenURI)
+    function addItem(address buyer, string memory tokenURI)
         public
         returns (uint256)
     {

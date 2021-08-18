@@ -13,7 +13,7 @@ const createProduct = async (req, res) => {
         });
         const productObject = product.toObject();
         const contract = await productContract();
-        await contract.methods.sendItem(
+        await contract.methods.addItem(
             req.body.address,
             productURL(productObject._id)
         ).encodeABI();
@@ -108,9 +108,10 @@ const sendProduct = async (req, res) => {
         }
 
         const contract = await productContract();
-        await contract.methods.sendItem(
-            req.body.address,
-            productURL(req.params.id)
+        await contract.methods.transferFrom(
+            req.body.sender_address,
+            req.body.receiver_address,
+            req.params.id
         ).encodeABI();
         return res.json({
             message: 'product sent'
