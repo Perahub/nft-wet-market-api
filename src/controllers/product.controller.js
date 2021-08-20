@@ -9,7 +9,8 @@ const productURL = (id) => `${process.env.NODE_BASE_URL}/products/${id}`;
 const createProduct = async (req, res) => {
     try {
         const product = await ProductModel.create({
-            ...req.body
+            ...req.body,
+            item_id: ProductModel.count() + 1
         });
         const productObject = product.toObject();
         const contract = await productContract();

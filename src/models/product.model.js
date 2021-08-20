@@ -38,6 +38,9 @@ const productSchema = new Schema({
         },
         address: {
             type: String
+        },
+        item_id: {
+            type: Number
         }
     },
     modelOptions
