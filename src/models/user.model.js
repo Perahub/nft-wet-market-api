@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2';
 import {
-    v4 as uuidv4
-} from "uuid";
-import {
     modelOptions
 } from '../config/index'
 
@@ -13,10 +10,7 @@ const {
 
 const userSchema = new Schema({
         _id: {
-            type: String,
-            default: function () {
-                return uuidv4();
-            },
+            type: Schema.Types.ObjectId,
         },
         first_name: {
             type: String,
