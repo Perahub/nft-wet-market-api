@@ -3,21 +3,25 @@ import httpStatus from 'http-status-codes'
 import {
     productContract
 } from '../config';
+import {
+    create,
+    deleteById,
+    get,
+    totalProducts,
+    updateById
+} from '../repositories/product.repository';
 
 const productURL = (id) => `${process.env.NODE_BASE_URL}/products/${id}`;
 
 const createProduct = async (req, res) => {
     try {
-        const product = await ProductModel.create({
-            ...req.body,
-            item_id: ProductModel.count() + 1
-        });
-        const productObject = product.toObject();
-        const contract = await productContract();
-        await contract.methods.addItem(
-            req.body.address,
-            productURL(productObject._id)
-        ).encodeABI();
+        const product = await create(req, res)
+        // const productObject = product.toObject();
+        // const contract = await productContract();
+        // await contract.methods.addItem(
+        //     req.body.address,
+        //     productURL(productObject._id)
+        // ).encodeABI();
         return res.status(httpStatus.CREATED).json({
             product
         })
@@ -30,7 +34,8 @@ const createProduct = async (req, res) => {
 
 const getProduct = async (req, res, next) => {
     try {
-        const product = await ProductModel.findById(req.params.id);
+        // const product = await ProductModel.findById(req.params.id);
+        const product = await findByIdAndUpdate(req.params.id)
         const productObject = product.toObject();
         if (product) {
             res.json({
@@ -50,7 +55,7 @@ const getProduct = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
     try {
-        const products = await ProductModel.paginate();
+        const products = await get(req, res);
         res.json({
             ...products
         });
@@ -63,13 +68,7 @@ const getProducts = async (req, res, next) => {
 
 const updateProduct = async (req, res, next) => {
     try {
-        const product = await ProductModel.findByIdAndUpdate(
-            req.params.id, {
-                ...req.body,
-            }, {
-                new: true,
-            }
-        );
+        const product = await updateById(req, res);
         res.json({
             product
         });
@@ -82,9 +81,8 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
     try {
-        const product = await ProductModel.findById(req.params.id);
+        const product = await deleteById(req, res);
         if (product) {
-            await product.remove()
             return res.json({
                 message: "ok"
             });
