@@ -9,9 +9,6 @@ const {
 } = mongoose;
 
 const userSchema = new Schema({
-        _id: {
-            type: Schema.Types.ObjectId,
-        },
         first_name: {
             type: String,
         },
@@ -27,7 +24,10 @@ const userSchema = new Schema({
         wallet_address: {
             type: Number,
         },
-        products: [{ type: String, ref: 'Product' }]
+        products: [{
+            type: String,
+            ref: 'Product'
+        }]
     },
     modelOptions
 );
