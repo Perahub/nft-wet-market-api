@@ -112,12 +112,12 @@ const sendProduct = async (req, res) => {
             });
         }
 
-        const contract = await productContract();
-        await contract.methods.transferFrom(
-            req.body.sender_address,
-            req.body.receiver_address,
-            req.params.id
-        ).encodeABI();
+        // const contract = await productContract();
+        // await contract.methods.transferFrom(
+        //     req.body.sender_address,
+        //     req.body.receiver_address,
+        //     req.params.id
+        // ).encodeABI();
         return res.json({
             message: 'product sent'
         });

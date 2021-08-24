@@ -45,6 +45,10 @@ const totalProducts = async () => {
     return await ProductModel.countDocuments({})
 }
 
+const send = async (req, res) => {
+    const product = await findById(req)
+}
+
 export {
     create,
     updateById,
