@@ -6,8 +6,8 @@ import {
 import {
     create,
     deleteById,
+    findById,
     get,
-    totalProducts,
     updateById
 } from '../repositories/product.repository';
 
@@ -34,8 +34,7 @@ const createProduct = async (req, res) => {
 
 const getProduct = async (req, res, next) => {
     try {
-        // const product = await ProductModel.findById(req.params.id);
-        const product = await findByIdAndUpdate(req.params.id)
+        const product = await findById(req)
         const productObject = product.toObject();
         if (product) {
             res.json({
@@ -43,12 +42,13 @@ const getProduct = async (req, res, next) => {
             });
         } else {
             res.status(httpStatus.NOT_FOUND).json({
-                error: "Not found",
+                message: "Not found",
             });
         }
     } catch (error) {
+        console.log(error)
         res.status(httpStatus.BAD_REQUEST).json({
-            error: error.message,
+            message: error.message,
         });
     }
 };
@@ -61,7 +61,7 @@ const getProducts = async (req, res, next) => {
         });
     } catch (error) {
         res.status(httpStatus.BAD_REQUEST).json({
-            error: error.message,
+            message: error.message,
         });
     }
 };
@@ -69,12 +69,18 @@ const getProducts = async (req, res, next) => {
 const updateProduct = async (req, res, next) => {
     try {
         const product = await updateById(req, res);
-        res.json({
-            product
-        });
+        if (product) {
+            return res.json({
+                product
+            });
+        }
+        return res.status(httpStatus.NOT_FOUND).json({
+            message: "Not found!"
+        })
+
     } catch (error) {
         res.status(httpStatus.BAD_REQUEST).json({
-            error: error.message,
+            message: error.message,
         });
     }
 }
@@ -92,7 +98,7 @@ const deleteProduct = async (req, res, next) => {
         });
     } catch (error) {
         res.status(httpStatus.BAD_REQUEST).json({
-            error: error.message,
+            message: error.message,
         });
     }
 }
