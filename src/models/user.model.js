@@ -32,7 +32,8 @@ const userSchema = new Schema({
         },
         wallet_address: {
             type: Number,
-        }
+        },
+        products: [{ type: String, ref: 'Product' }]
     },
     modelOptions
 );

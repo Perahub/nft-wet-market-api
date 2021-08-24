@@ -41,7 +41,8 @@ const productSchema = new Schema({
         },
         item_id: {
             type: Number
-        }
+        },
+        owner: [{ type: String, ref: 'User' }]
     },
     modelOptions
 );
