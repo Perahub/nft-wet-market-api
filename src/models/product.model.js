@@ -33,10 +33,10 @@ const productSchema = new Schema({
         item_id: {
             type: Number
         },
-        owner: {
+        owner: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
-        }
+        }]
     },
     modelOptions
 );
