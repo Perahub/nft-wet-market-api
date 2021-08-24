@@ -22,7 +22,7 @@ const userSchema = new Schema({
             type: String,
         },
         wallet_address: {
-            type: Number,
+            type: String,
         },
         products: [{
             type: String,
