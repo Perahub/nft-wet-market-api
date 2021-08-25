@@ -37,15 +37,12 @@ const startApplication = (app) => {
     db.on("error", console.error.bind(console, "connection error:"));
 };
 
-const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-const productNetworkId = async () => web3.eth.net.getId();
-const productContract = async () => {
-    const networkId = await productNetworkId();
-    const productNetworkData = await Product.networks[networkId]
-    const productContractAddress = productNetworkData.address;
-    const contract = new web3.eth.Contract(Product.abi, productContractAddress);
-    return contract;
-}
+const web3 = new Web3(Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+const networkId = async () => web3.eth.net.getId();
+const productNetworkData = async () => Product.networks[await networkId()]
+const productContractAddress = async () => await productNetworkData.address;
+const productContract = async () => new web3.eth.Contract(Product.abi, await productContractAddress());
+
 
 export {
     web3,

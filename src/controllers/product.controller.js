@@ -16,12 +16,12 @@ const productURL = (id) => `${process.env.NODE_BASE_URL}/products/${id}`;
 const createProduct = async (req, res) => {
     try {
         const product = await create(req, res)
-        // const productObject = product.toObject();
-        // const contract = await productContract();
-        // await contract.methods.addItem(
-        //     req.body.address,
-        //     productURL(productObject._id)
-        // ).encodeABI();
+        const productObject = product.toObject();
+        const contract = await productContract();
+        await contract.methods.addItem(
+            req.body.address,
+            productURL(productObject._id)
+        ).encodeABI();
         return res.status(httpStatus.CREATED).json({
             product
         })
