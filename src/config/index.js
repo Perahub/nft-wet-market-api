@@ -37,7 +37,7 @@ const startApplication = (app) => {
     db.on("error", console.error.bind(console, "connection error:"));
 };
 
-const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 const productNetworkId = async () => web3.eth.net.getId();
 const productContract = async () => {
     const networkId = await productNetworkId();
