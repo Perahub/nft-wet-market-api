@@ -1,3 +1,4 @@
+const HTTPProviderRateLimitRetry = require('./lib/http-provider-rate-limit-retry')
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -44,10 +45,25 @@ module.exports = {
     // options below to some value.
     //
     development: {
-      host: "127.0.0.1", // Localhost (default: none)
-      port: 8545, // Standard Ethereum port (default: none)
-      network_id: "*", // Any network (default: none)
+      provider: () => {
+        const appCred = 'u0e30jkyf5:LfhCsAXdmyUxHxkXGhQpoyZ6m8qVCRUNhdp7eM8gfP4'; // from application credential widget
+        const connectionURL = 'u0hu69zbpp-u0xge83fhs-rpc.us0-aws.kaleido.io'; // without protocol (https://)
+        return new HTTPProviderRateLimitRetry(`https://${appCred}@${connectionURL}`, 100000);
+      },
+      network_id: "*", // Match any network id
+      gasPrice: 0,
+      gas: 4500000,
+      disableConfirmationListener: true, // generates thousands of eth_getBlockByNumber calls
+      timeoutBlocks: 3,
+      deploymentPollingInterval: 5000,
+      networkCheckTimeout: 10000000
+      /* type: 'quorum' // Use this property for Quorum environments */
     },
+    // development: {
+    //   host: "127.0.0.1", // Localhost (default: none)
+    //   port: 8545, // Standard Ethereum port (default: none)
+    //   network_id: "*", // Any network (default: none)
+    // },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
@@ -85,13 +101,14 @@ module.exports = {
     solc: {
       version: "^0.8.0", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
+      settings: { // See the solidity docs for advice about optimization and evmVersion
+        //  optimizer: {
+        //    enabled: false,
+        //    runs: 200
+        //  },
+        //  evmVersion: "byzantium"
+        evmVersion: "constantinople"
+      }
     }
   },
 
