@@ -4,6 +4,7 @@
         ".gitignore",
         ".git",
         "build",
+        "dist",
         "*.png",
         "node_modules",
         "truffle-box.json"

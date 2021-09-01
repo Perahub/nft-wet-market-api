@@ -1,4 +1,5 @@
 const HTTPProviderRateLimitRetry = require('./lib/http-provider-rate-limit-retry')
+require('dotenv').config()
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -46,9 +47,8 @@ module.exports = {
     //
     development: {
       provider: () => {
-        const appCred = 'u0e30jkyf5:LfhCsAXdmyUxHxkXGhQpoyZ6m8qVCRUNhdp7eM8gfP4'; // from application credential widget
-        const connectionURL = 'u0hu69zbpp-u0xge83fhs-rpc.us0-aws.kaleido.io'; // without protocol (https://)
-        return new HTTPProviderRateLimitRetry(`https://${appCred}@${connectionURL}`, 100000);
+        const KALEIDO_RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || 'u0l9dzlemp:_-wXkR-JDK-GDA5rsXxNEMEfjjJfVLF5bJ4L_gdyme8@u0d3kkz6ti-u0c5lpcpv0-rpc.us0-aws.kaleido.io'
+        return new HTTPProviderRateLimitRetry(`https://${KALEIDO_RPC_ENDPOINT}`, 100000);
       },
       network_id: "*", // Match any network id
       gasPrice: 0,
