@@ -47,11 +47,9 @@ module.exports = {
     //
     development: {
       provider: () => {
-        let USER = process.env.KALEIDO_USER || 'u0rmo9eat6';
-        let PASS = process.env.KALEIDO_PASSWORD || "6VysW7b6_wR5owdXKpYGOWMR83Eko9Ex8x0kR8mKqB0";
-        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0vz09agrt-u0ve27gvvq-rpc.us0-aws.kaleido.io";
-        let nodeUrl = `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
-        return new HTTPProviderRateLimitRetry(`${nodeUrl}`, 100000);
+        const appCred = 'u0vct7rcmr:w4lAYKYFOlj47Z5GAuhuiFVt6ZqtOoxo2DwVhgUwAt4'; // from application credential widget
+        const connectionURL = 'u0m0yp2wlh-u0l38zh5na-rpc.us0-aws.kaleido.io'; // without protocol (https://)
+        return new HTTPProviderRateLimitRetry(`https://${appCred}@${connectionURL}`, 100000);
       },
       network_id: "*", // Match any network id
       gasPrice: 0,

@@ -37,9 +37,9 @@ const startApplication = (app) => {
     db.on("error", console.error.bind(console, "connection error:"));
 };
 
-let USER = process.env.KALEIDO_USER || 'u0rmo9eat6';
-let PASS = process.env.KALEIDO_PASSWORD || "6VysW7b6_wR5owdXKpYGOWMR83Eko9Ex8x0kR8mKqB0";
-let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0vz09agrt-u0ve27gvvq-rpc.us0-aws.kaleido.io";
+let USER = process.env.KALEIDO_USER || 'u0vct7rcmr';
+let PASS = process.env.KALEIDO_PASSWORD || "w4lAYKYFOlj47Z5GAuhuiFVt6ZqtOoxo2DwVhgUwAt4";
+let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0m0yp2wlh-u0l38zh5na-rpc.us0-aws.kaleido.io";
 let nodeUrl = `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
 const web3 = new Web3(Web3.providers.HttpProvider(nodeUrl));
 const networkId = async () => web3.eth.net.getId();
