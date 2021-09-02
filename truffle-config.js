@@ -49,7 +49,7 @@ module.exports = {
       provider: () => {
         let USER = process.env.KALEIDO_USER || 'u0rmo9eat6';
         let PASS = process.env.KALEIDO_PASSWORD || "6VysW7b6_wR5owdXKpYGOWMR83Eko9Ex8x0kR8mKqB0";
-        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0vz09agrt-u0uar0jt2v-rpc.us0-aws.kaleido.io";
+        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0vz09agrt-u0ve27gvvq-rpc.us0-aws.kaleido.io";
         let nodeUrl = `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
         return new HTTPProviderRateLimitRetry(`${nodeUrl}`, 100000);
       },
