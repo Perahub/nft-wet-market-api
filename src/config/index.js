@@ -37,10 +37,18 @@ const startApplication = (app) => {
     db.on("error", console.error.bind(console, "connection error:"));
 };
 
-let USER = process.env.KALEIDO_USER || 'u0icfks1vj';
-let PASS = process.env.KALEIDO_PASSWORD || "KoKChw84BfGLLu90_wIh2iCENLMP0FnA5PLf2hV1TUM";
-let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0k924ua78-u0il4dic0v-rpc.us0-aws.kaleido.io";
-let nodeUrl = `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
+const getHttpProvider = () => {
+    if (process.env.NODE_ENV === 'production') {
+        let USER = process.env.KALEIDO_USER || 'u0icfks1vj';
+        let PASS = process.env.KALEIDO_PASSWORD || "KoKChw84BfGLLu90_wIh2iCENLMP0FnA5PLf2hV1TUM";
+        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0k924ua78-u0il4dic0v-rpc.us0-aws.kaleido.io";
+        return `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
+    } else {
+        return 'http://localhost:8545'
+    }
+}
+
+const nodeUrl = getHttpProvider();
 const web3 = new Web3(Web3.providers.HttpProvider(nodeUrl));
 const networkId = async () => web3.eth.net.getId();
 const productNetworkData = async () => Product.networks[await networkId()]

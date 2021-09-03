@@ -45,7 +45,7 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    staging: {
+    production: {
       provider: () => {
         const appCred = 'u0icfks1vj:KoKChw84BfGLLu90_wIh2iCENLMP0FnA5PLf2hV1TUM'; // from application credential widget
         const connectionURL = 'u0k924ua78-u0il4dic0v-rpc.us0-aws.kaleido.io'; // without protocol (https://)
