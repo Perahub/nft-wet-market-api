@@ -39,9 +39,9 @@ const startApplication = (app) => {
 
 const getHttpProvider = () => {
     if (process.env.NODE_ENV === 'production') {
-        let USER = process.env.KALEIDO_USER || 'u0icfks1vj';
-        let PASS = process.env.KALEIDO_PASSWORD || "KoKChw84BfGLLu90_wIh2iCENLMP0FnA5PLf2hV1TUM";
-        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0k924ua78-u0il4dic0v-rpc.us0-aws.kaleido.io";
+        let USER = process.env.KALEIDO_USER || 'u0jgz0mxii';
+        let PASS = process.env.KALEIDO_PASSWORD || "Fjoh2U7anVpNIZ-WtkqdD8OeFIsMZczaTBFLg7ec1k8";
+        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0hp7dw3b8-u0vcjk91r1-rpc.us0-aws.kaleido.io";
         return `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
     } else {
         return 'http://localhost:8545'

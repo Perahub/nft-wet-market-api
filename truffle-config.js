@@ -47,8 +47,8 @@ module.exports = {
     //
     production: {
       provider: () => {
-        const appCred = 'u0icfks1vj:KoKChw84BfGLLu90_wIh2iCENLMP0FnA5PLf2hV1TUM'; // from application credential widget
-        const connectionURL = 'u0k924ua78-u0il4dic0v-rpc.us0-aws.kaleido.io'; // without protocol (https://)
+        const appCred = 'u0jgz0mxii:Fjoh2U7anVpNIZ-WtkqdD8OeFIsMZczaTBFLg7ec1k8'; // from application credential widget
+        const connectionURL = 'u0hp7dw3b8-u0vcjk91r1-rpc.us0-aws.kaleido.io'; // without protocol (https://)
         return new HTTPProviderRateLimitRetry(`https://${appCred}@${connectionURL}`, 100000);
       },
       network_id: "*", // Match any network id
