@@ -45,7 +45,7 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    development: {
+    staging: {
       provider: () => {
         const appCred = 'u0icfks1vj:KoKChw84BfGLLu90_wIh2iCENLMP0FnA5PLf2hV1TUM'; // from application credential widget
         const connectionURL = 'u0k924ua78-u0il4dic0v-rpc.us0-aws.kaleido.io'; // without protocol (https://)
@@ -60,11 +60,11 @@ module.exports = {
       networkCheckTimeout: 10000000
       /* type: 'quorum' // Use this property for Quorum environments */
     },
-    // development: {
-    //   host: "127.0.0.1", // Localhost (default: none)
-    //   port: 8545, // Standard Ethereum port (default: none)
-    //   network_id: "*", // Any network (default: none)
-    // },
+    development: {
+      host: "127.0.0.1", // Localhost (default: none)
+      port: 8545, // Standard Ethereum port (default: none)
+      network_id: "*", // Any network (default: none)
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
