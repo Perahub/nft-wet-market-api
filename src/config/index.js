@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import Web3 from 'web3';
 import mongoose from "mongoose";
 import Product from '../abis/Product.json'
+import Coin from '../abis/Coin.json'
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ const getHttpProvider = () => {
 const nodeUrl = getHttpProvider();
 const web3 = new Web3(Web3.givenProvider || nodeUrl);
 const networkId = async () => web3.eth.net.getId();
+
 const productNetworkData = async () => Product.networks[await networkId()]
 const productContractAddress = async () => {
     const network = await productNetworkData()
@@ -58,11 +60,17 @@ const productContractAddress = async () => {
 }
 const productContract = async () => new web3.eth.Contract(Product.abi, await productContractAddress());
 
+const coinNetworkData = async () => Coin.networks[await networkId()]
+const coinContractAddress = async () => {
+    const network = await coinNetworkData()
+    return network.address;
+}
+const coinContract = async () => new web3.eth.Contract(Coin.abi, await coinContractAddress());
 
 export {
     web3,
     productContract,
+    coinContract,
     startApplication,
-    modelOptions,
-    productContractAddress
+    modelOptions
 }

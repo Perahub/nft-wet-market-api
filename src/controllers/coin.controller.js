@@ -1,8 +1,12 @@
-import { productContractAddress, web3 } from "../config";
+import { coinContract } from "../config"
+
 
 const totalSupply = async (req, res, next) => {
-    // const networkId = await web3.eth.net.getId();
-    console.log(await productContractAddress())
+    const contract = await coinContract()
+    const totalSupply = await contract.methods.totalSupply().call();
+    res.json({
+        totalSupply
+    })
 }
 
 export {
