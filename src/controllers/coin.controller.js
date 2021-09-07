@@ -18,7 +18,7 @@ const totalSupply = async (req, res, next) => {
 const mintCoin = async (req, res, next) => {
     try {
         const contract = await coinContract()
-        await contract.methods.mint(req.body.address, Number(req.body.amount) * DEFAULT_DECIMAL_PLACES).send({
+        await contract.methods.mint(req.body.address, Number(req.body.amount)).send({
             from: minterAddress
         });
         return res.json({
