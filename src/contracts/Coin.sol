@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol";
 
-contract Coin is ERC20 {
-    constructor(uint256 initialSupply) ERC20("PHP Token", "PHPT") {
-        _mint(msg.sender, initialSupply);
+contract Coin is ERC20PresetMinterPauser {
+    constructor(uint256 initialSupply)
+        ERC20PresetMinterPauser("PHP Token", "PHPT")
+    {
+        super._mint(msg.sender, initialSupply);
     }
 }
