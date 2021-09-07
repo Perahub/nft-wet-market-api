@@ -49,10 +49,13 @@ const getHttpProvider = () => {
 }
 
 const nodeUrl = getHttpProvider();
-const web3 = new Web3(Web3.providers.HttpProvider(nodeUrl));
+const web3 = new Web3(Web3.givenProvider || nodeUrl);
 const networkId = async () => web3.eth.net.getId();
 const productNetworkData = async () => Product.networks[await networkId()]
-const productContractAddress = async () => await productNetworkData.address;
+const productContractAddress = async () => {
+    const network = await productNetworkData()
+    return network.address;
+}
 const productContract = async () => new web3.eth.Contract(Product.abi, await productContractAddress());
 
 
@@ -60,5 +63,6 @@ export {
     web3,
     productContract,
     startApplication,
-    modelOptions
+    modelOptions,
+    productContractAddress
 }
