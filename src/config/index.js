@@ -52,7 +52,8 @@ const getHttpProvider = () => {
 const nodeUrl = getHttpProvider();
 const web3 = new Web3(Web3.givenProvider || nodeUrl);
 const networkId = async () => web3.eth.net.getId();
-const minterAddress = process.env.MINTER_ADDRESS || '0x067b9D0649ad49c6ACdA3ab8B6176Bb20962bDf3';
+const minterAddress = process.env.MINTER_ADDRESS || '0x9Cac38cd5bF202B9e76E7fb2d8FA50e4CB07df11';
+const DEFAULT_DECIMAL_PLACES = 1000000000000000000;
 
 const productNetworkData = async () => Product.networks[await networkId()]
 const productContractAddress = async () => {
@@ -74,5 +75,6 @@ export {
     coinContract,
     startApplication,
     modelOptions,
-    minterAddress
+    minterAddress,
+    DEFAULT_DECIMAL_PLACES
 }

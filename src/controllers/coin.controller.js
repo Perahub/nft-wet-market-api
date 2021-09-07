@@ -1,6 +1,7 @@
 import {
     coinContract,
-    minterAddress
+    minterAddress,
+    DEFAULT_DECIMAL_PLACES
 } from "../config"
 import httpStatus from 'http-status-codes'
 
@@ -17,7 +18,7 @@ const totalSupply = async (req, res, next) => {
 const mintCoin = async (req, res, next) => {
     try {
         const contract = await coinContract()
-        const mint = await contract.methods.mint(req.body.address, Number(req.body.amount)).send({
+        await contract.methods.mint(req.body.address, Number(req.body.amount) * DEFAULT_DECIMAL_PLACES).send({
             from: minterAddress
         });
         return res.json({
@@ -35,7 +36,7 @@ const accountBalance = async (req, res, next) => {
         const contract = await coinContract()
         const balance = await contract.methods.balanceOf(req.params.address).call();
         return res.json({
-            balance
+            balance: balance / DEFAULT_DECIMAL_PLACES
         })
     } catch (error) {
         return res.status(httpStatus.BAD_REQUEST).json({
