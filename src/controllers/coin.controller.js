@@ -8,11 +8,18 @@ import httpStatus from 'http-status-codes'
 
 
 const totalSupply = async (req, res, next) => {
-    const contract = await coinContract()
-    const totalSupply = await contract.methods.totalSupply().call();
-    res.json({
-        totalSupply
-    })
+    try {
+        const contract = await coinContract()
+        const totalSupply = await contract.methods.totalSupply().call();
+        res.json({
+            totalSupply
+        })
+    } catch (error) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+            message: error.message
+        })
+    }
+
 }
 
 const mintCoin = async (req, res, next) => {
