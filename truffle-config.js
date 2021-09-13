@@ -1,3 +1,5 @@
+const HTTPProviderRateLimitRetry = require('./lib/http-provider-rate-limit-retry')
+require('dotenv').config()
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -43,6 +45,21 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
+    production: {
+      provider: () => {
+        const appCred = 'u0jgz0mxii:Fjoh2U7anVpNIZ-WtkqdD8OeFIsMZczaTBFLg7ec1k8'; // from application credential widget
+        const connectionURL = 'u0hp7dw3b8-u0vcjk91r1-rpc.us0-aws.kaleido.io'; // without protocol (https://)
+        return new HTTPProviderRateLimitRetry(`https://${appCred}@${connectionURL}`, 100000);
+      },
+      network_id: "*", // Match any network id
+      gasPrice: 0,
+      gas: 4500000,
+      disableConfirmationListener: true, // generates thousands of eth_getBlockByNumber calls
+      timeoutBlocks: 3,
+      deploymentPollingInterval: 5000,
+      networkCheckTimeout: 10000000
+      /* type: 'quorum' // Use this property for Quorum environments */
+    },
     development: {
       host: "127.0.0.1", // Localhost (default: none)
       port: 8545, // Standard Ethereum port (default: none)
@@ -85,13 +102,14 @@ module.exports = {
     solc: {
       version: "^0.8.0", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
+      settings: { // See the solidity docs for advice about optimization and evmVersion
+        //  optimizer: {
+        //    enabled: false,
+        //    runs: 200
+        //  },
+        //  evmVersion: "byzantium"
+        evmVersion: "constantinople"
+      }
     }
   },
 
