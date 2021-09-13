@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import Web3 from 'web3';
 import mongoose from "mongoose";
 import Product from '../abis/Product.json'
+import Coin from '../abis/Coin.json'
 
 dotenv.config();
 
@@ -37,20 +38,43 @@ const startApplication = (app) => {
     db.on("error", console.error.bind(console, "connection error:"));
 };
 
-let USER = process.env.KALEIDO_USER || 'u0e30jkyf5';
-let PASS = process.env.KALEIDO_PASSWORD || "LfhCsAXdmyUxHxkXGhQpoyZ6m8qVCRUNhdp7eM8gfP4";
-let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0e30jkyf5:LfhCsAXdmyUxHxkXGhQpoyZ6m8qVCRUNhdp7eM8gfP4@u0hu69zbpp-u0xge83fhs-rpc.us0-aws.kaleido.io";
-let nodeUrl = `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
-const web3 = new Web3(Web3.providers.HttpProvider(nodeUrl));
+const getHttpProvider = () => {
+    if (process.env.NODE_ENV === 'production') {
+        let USER = process.env.KALEIDO_USER || 'u0jgz0mxii';
+        let PASS = process.env.KALEIDO_PASSWORD || "Fjoh2U7anVpNIZ-WtkqdD8OeFIsMZczaTBFLg7ec1k8";
+        let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0hp7dw3b8-u0vcjk91r1-rpc.us0-aws.kaleido.io";
+        return `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
+    } else {
+        return 'http://localhost:8545'
+    }
+}
+
+const nodeUrl = getHttpProvider();
+const web3 = new Web3(Web3.givenProvider || nodeUrl);
 const networkId = async () => web3.eth.net.getId();
+const minterAddress = process.env.MINTER_ADDRESS || '0x008190E231410E2D03D537C9b4A4CA84CC73d59A';
+const DEFAULT_DECIMAL_PLACES = Math.pow(10, 18);
+
 const productNetworkData = async () => Product.networks[await networkId()]
-const productContractAddress = async () => await productNetworkData.address;
+const productContractAddress = async () => {
+    const network = await productNetworkData()
+    return network.address;
+}
 const productContract = async () => new web3.eth.Contract(Product.abi, await productContractAddress());
 
+const coinNetworkData = async () => Coin.networks[await networkId()]
+const coinContractAddress = async () => {
+    const network = await coinNetworkData()
+    return network.address;
+}
+const coinContract = async () => new web3.eth.Contract(Coin.abi, await coinContractAddress());
 
 export {
     web3,
     productContract,
+    coinContract,
     startApplication,
-    modelOptions
+    modelOptions,
+    minterAddress,
+    DEFAULT_DECIMAL_PLACES
 }

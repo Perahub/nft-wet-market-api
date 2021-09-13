@@ -19,7 +19,6 @@ const get = async (req, res) => {
     return products;
 }
 
-
 const updateById = async (req, res) => {
     const product = await ProductModel.findByIdAndUpdate(
         req.params.id, {
@@ -30,7 +29,6 @@ const updateById = async (req, res) => {
     );
     return product;
 }
-
 
 const deleteById = async (req, res) => {
     const product = await ProductModel.findById(req.params.id);

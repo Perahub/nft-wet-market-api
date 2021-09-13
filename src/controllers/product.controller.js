@@ -123,7 +123,7 @@ const sendProduct = async (req, res) => {
         });
         // return
     } catch (error) {
-        return res.status(400).json({
+        return res.status(httpStatus.BAD_REQUEST).json({
             message: error.message
         })
     }
