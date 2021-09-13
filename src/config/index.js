@@ -52,8 +52,8 @@ const getHttpProvider = () => {
 const nodeUrl = getHttpProvider();
 const web3 = new Web3(Web3.givenProvider || nodeUrl);
 const networkId = async () => web3.eth.net.getId();
-const minterAddress = process.env.MINTER_ADDRESS || '0xA3961919F1518Bbb178f1671D348582aF960B07d';
-const DEFAULT_DECIMAL_PLACES = 1000000000000000000;
+const minterAddress = process.env.MINTER_ADDRESS || '0x008190E231410E2D03D537C9b4A4CA84CC73d59A';
+const DEFAULT_DECIMAL_PLACES = Math.pow(10, 18);
 
 const productNetworkData = async () => Product.networks[await networkId()]
 const productContractAddress = async () => {

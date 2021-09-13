@@ -36,7 +36,7 @@ const accountBalance = async (req, res, next) => {
         const contract = await coinContract()
         const balance = await contract.methods.balanceOf(req.params.address).call();
         return res.json({
-            balance: balance / DEFAULT_DECIMAL_PLACES
+            balance: balance
         })
     } catch (error) {
         return res.status(httpStatus.BAD_REQUEST).json({
