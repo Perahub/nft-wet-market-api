@@ -2,14 +2,17 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Coin is ERC20PresetMinterPauser {
-    uint256 public constant DECIMAL = (10**18);
+    using SafeMath for uint256;
+
+    uint256 public constant DECIMAL = 1000000000000000000;
 
     constructor(uint256 initialSupply)
         ERC20PresetMinterPauser("PHP Token", "PHPT")
     {
-        super._mint(msg.sender, initialSupply);
+        super._mint(msg.sender, initialSupply.mul(DECIMAL));
     }
 
     /**
@@ -26,7 +29,7 @@ contract Coin is ERC20PresetMinterPauser {
             hasRole(MINTER_ROLE, _msgSender()),
             "ERC20PresetMinterPauser: must have minter role to mint"
         );
-        _mint(to, amount * DECIMAL);
+        _mint(to, amount.mul(DECIMAL));
     }
 
     /**
@@ -39,13 +42,15 @@ contract Coin is ERC20PresetMinterPauser {
         override
         returns (uint256)
     {
-        return super.balanceOf(account) / DECIMAL;
+        uint256 currentBalance_ = super.balanceOf(account);
+        return currentBalance_.div(DECIMAL);
     }
 
     /**
      * @dev See {IERC20-totalSupply}.
      */
     function totalSupply() public view virtual override returns (uint256) {
-        return super.totalSupply() / DECIMAL;
+        uint256 totalSupply_ = super.totalSupply();
+        return totalSupply_.div(DECIMAL);
     }
 }
