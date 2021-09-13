@@ -65,7 +65,7 @@ const getTransactions = async (req, res, next) => {
 };
 
 export {
-    createProduct,
-    getProduct,
-    getProducts
+    createTransaction,
+    getTransaction,
+    getTransactions
 }
