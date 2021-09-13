@@ -29,7 +29,7 @@ contract Coin is ERC20PresetMinterPauser {
             hasRole(MINTER_ROLE, _msgSender()),
             "ERC20PresetMinterPauser: must have minter role to mint"
         );
-        _mint(to, amount.mul(DECIMAL));
+        _mint(to, amount);
     }
 
     /**
