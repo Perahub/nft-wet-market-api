@@ -1,6 +1,7 @@
 import ProductModel from '../models/product.model'
 import httpStatus from 'http-status-codes'
 import {
+    minterAddress,
     productContract
 } from '../config';
 import {
@@ -21,7 +22,10 @@ const createProduct = async (req, res) => {
         await contract.methods.addItem(
             req.body.address,
             productURL(productObject._id)
-        ).encodeABI();
+        ).send({
+            from: minterAddress,
+            gas: 6721975
+        })
         return res.status(httpStatus.CREATED).json({
             product
         })
@@ -112,18 +116,37 @@ const sendProduct = async (req, res) => {
             });
         }
 
-        // const contract = await productContract();
-        // await contract.methods.transferFrom(
-        //     req.body.sender_address,
-        //     req.body.receiver_address,
-        //     req.params.id
-        // ).encodeABI();
+        const contract = await productContract();
+        await contract.methods.safeTransferFrom(
+            req.body.sender_address,
+            req.body.receiver_address,
+            product.item_id
+        ).send({
+            from: minterAddress,
+            gas: 6721975
+        })
         return res.json({
             message: 'product sent'
         });
-        // return
+
     } catch (error) {
-        return res.status(400).json({
+        return res.status(httpStatus.BAD_REQUEST).json({
+            message: error.message
+        })
+    }
+}
+
+const accountBalance = async (req, res) => {
+    try {
+        const contract = await productContract();
+        const balance = await contract.methods.balanceOf(
+            req.params.address
+        ).call();
+        return res.json({
+            data: Number(balance)
+        });
+    } catch (error) {
+        return res.status(httpStatus.BAD_REQUEST).json({
             message: error.message
         })
     }
@@ -136,5 +159,6 @@ export {
     getProduct,
     getProducts,
     deleteProduct,
-    sendProduct
+    sendProduct,
+    accountBalance
 }
