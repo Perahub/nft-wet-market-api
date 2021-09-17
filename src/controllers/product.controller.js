@@ -117,7 +117,7 @@ const sendProduct = async (req, res) => {
                 message: "Not found!"
             });
         }
-        const productID = product.item_id;
+        const productID = Number(product.item_id);
 
         const contract = await productContract();
         const block = await web3.eth.getBlock("latest");
