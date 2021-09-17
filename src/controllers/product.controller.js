@@ -117,9 +117,7 @@ const sendProduct = async (req, res) => {
                 message: "Not found!"
             });
         }
-
-        product.address =  req.body.receiver_address;
-        product.save();
+        product.delete();
 
         const contract = await productContract();
         const block = await web3.eth.getBlock("latest");
