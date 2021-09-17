@@ -2,7 +2,8 @@ import ProductModel from '../models/product.model'
 import httpStatus from 'http-status-codes'
 import {
     minterAddress,
-    productContract
+    productContract,
+    web3
 } from '../config';
 import {
     create,
@@ -19,12 +20,13 @@ const createProduct = async (req, res) => {
         const product = await create(req, res)
         const productObject = product.toObject();
         const contract = await productContract();
+        const block = await web3.eth.getBlock("latest");
         await contract.methods.addItem(
             req.body.address,
             productURL(productObject.id)
         ).send({
             from: minterAddress,
-            gas: 6721975
+            gas: block.gasLimit
         })
         return res.status(httpStatus.CREATED).json({
             product
@@ -120,14 +122,14 @@ const sendProduct = async (req, res) => {
         product.save();
 
         const contract = await productContract();
-
+        const block = await web3.eth.getBlock("latest");
         await contract.methods.safeTransferFrom(
             req.body.sender_address,
             req.body.receiver_address,
             product.item_id
         ).send({
             from: req.body.sender_address,
-            gas: 6721975
+            gas: block.gasLimit
         })
         return res.json({
             message: 'product sent'
