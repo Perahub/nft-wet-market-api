@@ -32,7 +32,7 @@ const createProduct = async (req, res) => {
             product
         })
     } catch (error) {
-        return res.status(400).json({
+        return res.status(httpStatus.BAD_REQUEST).json({
             message: error.message
         })
     }
