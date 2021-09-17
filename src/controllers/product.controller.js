@@ -21,7 +21,7 @@ const createProduct = async (req, res) => {
         const contract = await productContract();
         await contract.methods.addItem(
             req.body.address,
-            productURL(productObject._id)
+            productURL(productObject.id)
         ).send({
             from: minterAddress,
             gas: 6721975
@@ -117,12 +117,13 @@ const sendProduct = async (req, res) => {
         }
 
         const contract = await productContract();
+
         await contract.methods.safeTransferFrom(
             req.body.sender_address,
             req.body.receiver_address,
             product.item_id
         ).send({
-            from: minterAddress,
+            from: req.body.sender_address,
             gas: 6721975
         })
         return res.json({
