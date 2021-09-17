@@ -116,6 +116,9 @@ const sendProduct = async (req, res) => {
             });
         }
 
+        product.address =  req.body.receiver_address;
+        product.save();
+
         const contract = await productContract();
 
         await contract.methods.safeTransferFrom(
