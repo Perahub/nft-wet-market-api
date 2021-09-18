@@ -43,7 +43,7 @@ const getHttpProvider = () => {
         let USER = process.env.KALEIDO_USER || 'u0jgz0mxii';
         let PASS = process.env.KALEIDO_PASSWORD || "Fjoh2U7anVpNIZ-WtkqdD8OeFIsMZczaTBFLg7ec1k8";
         let RPC_ENDPOINT = process.env.KALEIDO_RPC_ENDPOINT || "u0hp7dw3b8-u0vcjk91r1-rpc.us0-aws.kaleido.io";
-        return `https://${USER}":"${PASS}"@"${RPC_ENDPOINT}`;
+        return `https://${USER}:${PASS}@${RPC_ENDPOINT}`;
     } else {
         return 'http://localhost:8545'
     }
@@ -52,7 +52,7 @@ const getHttpProvider = () => {
 const nodeUrl = getHttpProvider();
 const web3 = new Web3(Web3.givenProvider || nodeUrl);
 const networkId = async () => web3.eth.net.getId();
-const minterAddress = process.env.MINTER_ADDRESS || '0x38fff09A4341162e791F7f42B66741c5dbD32a33';
+const minterAddress = process.env.MINTER_ADDRESS || '0x3fb504Ebfa1aAEd7074B077F3C9D76Fdb517ce37';
 const DEFAULT_DECIMAL_PLACES = Math.pow(10, 18);
 
 const productNetworkData = async () => Product.networks[await networkId()]

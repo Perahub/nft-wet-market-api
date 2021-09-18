@@ -117,20 +117,20 @@ const sendProduct = async (req, res) => {
                 message: "Not found!"
             });
         }
-
-        product.address =  req.body.receiver_address;
-        product.save();
+        const productID = Number(product.item_id);
 
         const contract = await productContract();
         const block = await web3.eth.getBlock("latest");
         await contract.methods.safeTransferFrom(
             req.body.sender_address,
             req.body.receiver_address,
-            product.item_id
+            productID
         ).send({
             from: req.body.sender_address,
             gas: block.gasLimit
         })
+
+        product.delete();
         return res.json({
             message: 'product sent'
         });
